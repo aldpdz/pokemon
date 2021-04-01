@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.pokedex.R
+import com.pokedex.databinding.FragmentPokemonListBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -15,13 +16,15 @@ class PokemonListFragment : Fragment() {
 
     private val viewModel: PokemonListFragmentViewModel by viewModels()
     lateinit var adapter: PokemonAdapter
+    lateinit var binding: FragmentPokemonListBinding
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_pokemon_list, container, false)
+    ): View {
+        binding = FragmentPokemonListBinding.inflate(inflater)
+        binding.lifecycleOwner = viewLifecycleOwner
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

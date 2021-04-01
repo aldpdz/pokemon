@@ -3,6 +3,7 @@ package com.pokedex.pokemonList
 import androidx.lifecycle.*
 import com.pokedex.data.remote.BasicInfo
 import com.pokedex.repositories.IPokemonRepository
+import com.pokedex.utils.RemoteStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -23,11 +24,15 @@ class PokemonListFragmentViewModel @Inject constructor(
     private val _pokemons = MutableLiveData<List<BasicInfo>>()
     val pokemons: LiveData<List<BasicInfo>> get() = _pokemons
 
+    private val _networkStatus = MutableLiveData<RemoteStatus>()
+    val networkStatus : LiveData<RemoteStatus> get() = _networkStatus
+
     init {
         getPokemons()
     }
 
     private fun getPokemons() {
+        _networkStatus.value = RemoteStatus.LOADING
         compositeDisposable.add(
                 pokemonRepository.retrivePokemons()
                         .subscribeOn(Schedulers.io())
@@ -37,7 +42,7 @@ class PokemonListFragmentViewModel @Inject constructor(
                                 for (pokemon in list) {
                                     val url = pokemon.url
                                     val pokemonIndex = url.split("/")
-                                    pokemon.url = POKEMON_IMAGES_ENDPOINT
+                                    pokemon.urlImg = POKEMON_IMAGES_ENDPOINT
                                             .plus(pokemonIndex[pokemonIndex.size - 2])
                                             .plus(".png")
                                 }
@@ -45,9 +50,12 @@ class PokemonListFragmentViewModel @Inject constructor(
                             }
                         }
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe {
-                            _pokemons.value = it
-                        }
+                        .subscribe (
+                            {
+                                _networkStatus.value = RemoteStatus.DONE
+                                _pokemons.value = it },
+                            {
+                                _networkStatus.value = RemoteStatus.ERROR })
         )
     }
 

@@ -47,7 +47,7 @@ class PokemonAdapter () :
         // contents of the view with that element
         viewHolder.tvPokemonName.text = dataSet[position].name
 
-        val imgUri = dataSet[position].url.toUri().buildUpon().scheme("https").build()
+        val imgUri = dataSet[position].urlImg.toUri().buildUpon().scheme("https").build()
         Glide.with(viewHolder.img.context)
             .load(imgUri)
             .apply(
