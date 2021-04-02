@@ -28,6 +28,7 @@ class PokemonAdapter () :
      */
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvPokemonName: TextView = view.findViewById(R.id.tv_pokemon_name)
+        val tvType: TextView = view.findViewById(R.id.tv_type)
         val img: ImageView = view.findViewById(R.id.pokemon_image)
     }
 
@@ -46,6 +47,7 @@ class PokemonAdapter () :
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
         viewHolder.tvPokemonName.text = dataSet[position].name
+        viewHolder.tvType.text = dataSet[position].types
 
         val imgUri = dataSet[position].urlImg.toUri().buildUpon().scheme("https").build()
         Glide.with(viewHolder.img.context)
