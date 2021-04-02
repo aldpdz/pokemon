@@ -2,6 +2,7 @@ package com.pokedex.pokemonList
 
 import androidx.lifecycle.*
 import com.pokedex.data.remote.BasicInfo
+import com.pokedex.data.remote.Type
 import com.pokedex.repositories.IPokemonRepository
 import com.pokedex.utils.RemoteStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -45,7 +46,22 @@ class PokemonListFragmentViewModel @Inject constructor(
                                     pokemon.urlImg = POKEMON_IMAGES_ENDPOINT
                                             .plus(pokemonIndex[pokemonIndex.size - 2])
                                             .plus(".png")
+
+                                    pokemonRepository.getDetails(pokemon.url)
+                                        .subscribeOn(Schedulers.io())
+                                        .subscribe{ response ->
+                                            response.body()?.let { detail ->
+                                                var typeString = "-"
+                                                for(type in detail.types){
+                                                    typeString = typeString
+                                                        .plus(type.type.name)
+                                                        .plus("-")
+                                                }
+                                                pokemon.types = typeString
+                                            }
+                                        }
                                 }
+
                                 return@map list
                             }
                         }
