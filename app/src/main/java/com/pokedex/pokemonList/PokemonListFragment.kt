@@ -23,6 +23,7 @@ class PokemonListFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View {
         binding = FragmentPokemonListBinding.inflate(inflater)
+        binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
@@ -39,5 +40,12 @@ class PokemonListFragment : Fragment() {
             }
         })
 
+        binding.btnSearch.setOnClickListener {
+            viewModel.getPokemons(binding.etFilter.text.toString())
+        }
+
+        binding.btnLast10.setOnClickListener {
+            viewModel.getLast10()
+        }
     }
 }
