@@ -1,4 +1,4 @@
-package com.pokedex.pokemonList
+package com.pokedex.topics.rxjava
 
 import androidx.lifecycle.*
 import com.pokedex.data.remote.BasicInfo

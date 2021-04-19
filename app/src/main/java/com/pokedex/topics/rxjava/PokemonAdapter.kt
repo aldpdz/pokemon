@@ -1,4 +1,4 @@
-package com.pokedex.pokemonList
+package com.pokedex.topics.rxjava
 
 import android.view.LayoutInflater
 import android.view.View

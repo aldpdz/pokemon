@@ -18,4 +18,14 @@ interface PokemonService {
     fun getPokemonDetails(
         @Url url: String
     ): Observable<Response<DetailInfo>>
+
+    @GET(Endpoints.POKEMON)
+    suspend fun getPokemonsCoroutines(
+        @Query("limit") limit: Int
+    ): Response<Content>
+
+    @GET
+    suspend fun getPokemonDetailsCoroutines(
+        @Url url: String
+    ): Response<DetailInfo>
 }
